@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+// import Screens
+import 'package:app/screens/home/home.dart';
+
 class AppBottomBar extends StatefulWidget {
   AppBottomBar({Key key}) : super(key: key);
 
@@ -11,11 +14,8 @@ class _AppBottomBarState extends State<AppBottomBar> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Home',
-      style: optionStyle,
-    ),
+  static List<Widget> _widgetOptions = <Widget>[
+    HomeScreen(),
     Text(
       'Bookmarks',
       style: optionStyle,
