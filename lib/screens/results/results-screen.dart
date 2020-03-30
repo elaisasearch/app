@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:app/screens/results/widgets/resultListItem.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -68,9 +69,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
       // show list of results after API response is fetched
       return ListView(
         children: documents
-            .map((doc) => Card(
-                  child: ListTile(title: Text(doc['url'])),
-                ))
+            .map((doc) => ResultListItem(url: doc['url'], meta: doc['meta'], title: doc['title'], level: doc['level'], levelMeta: doc['level_meta'], pagerank: doc['pagerank']))
             .toList(),
       );
     }
