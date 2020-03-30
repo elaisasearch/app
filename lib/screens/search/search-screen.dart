@@ -25,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
         focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
         hintText: 'Search for documents'
       ),
+      textInputAction: TextInputAction.search
     );
 
     return Scaffold(
