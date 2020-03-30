@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       body: Center(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+          padding: EdgeInsets.only(right: 30, left: 30),
           // use full width / height
           alignment: Alignment(0.0, 0.0),
           color: Colors.white,
