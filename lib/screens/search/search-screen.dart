@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+// import models
+import 'package:app/models/searchModel.dart';
+
 // import widgets
 import 'package:app/screens/search/widgets/searchDropDown.dart';
+import 'package:app/screens/results/results-screen.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -11,6 +15,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  String _query;
+  String _language = 'en';
+  String _level = 'C1';
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +33,20 @@ class _HomeScreenState extends State<HomeScreen> {
         focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
         hintText: 'Search for documents'
       ),
-      textInputAction: TextInputAction.search
+      textInputAction: TextInputAction.search,
+      onChanged: (value) {
+        setState(() {
+          _query = value;
+        });
+      },
+      onFieldSubmitted: (_) { 
+        Navigator.push(
+          context, 
+          MaterialPageRoute(
+            builder: (context) => ResultsScreen(search: new Search(_query, _language, _level),)
+          )  
+        );
+      }
     );
 
     return Scaffold(
