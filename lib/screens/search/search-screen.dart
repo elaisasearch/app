@@ -39,12 +39,14 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               // Expanded expands its child to fill the available space.
               Expanded(
+                flex: 1,
                 child: Image(
                   image: AssetImage('assets/images/logo.png'), 
                   width: 200
                 )
               ),
               Expanded(
+                flex: 2,
                 child: Column(
                   children: <Widget>[
                     Row(
