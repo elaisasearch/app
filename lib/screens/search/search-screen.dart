@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String _query;
   String _language = 'en';
-  String _level = 'C1';
+  String _level = 'all';
 
   @override
   Widget build(BuildContext context) {
