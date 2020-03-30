@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // method to open a url
+    _launchUrl(String url) async {
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    }
 
     return Drawer(
       child: Column(
@@ -29,7 +39,7 @@ class MainDrawer extends StatelessWidget {
               children: <Widget>[
                 ListTile(
                   leading: Icon(Icons.school),
-                  title: Text('Language Tests')
+                  title: Text('Language Tests'),
                 ),
               ],
             )
@@ -43,16 +53,19 @@ class MainDrawer extends StatelessWidget {
                     Divider(),
                     ListTile(
                       leading: Icon(Icons.help),
-                      title: Text('Help')
+                      title: Text('Help'),
+                      onTap: () => _launchUrl('https://github.com/elaisasearch/elaisa.org/blob/master/README.md')
                     ),
                     Divider(),
                     ListTile(
                       leading: Icon(Icons.code),
-                      title: Text('See Code')
+                      title: Text('See Code'),
+                      onTap: () => _launchUrl('https://github.com/elaisasearch/app')
                     ),
                     ListTile(
                       leading: Icon(Icons.bug_report),
-                      title: Text('Report Bug')
+                      title: Text('Report Bug'),
+                      onTap: () => _launchUrl('https://github.com/elaisasearch/app/issues'),
                     ),
                     Divider(thickness: 1),
                     Container(
