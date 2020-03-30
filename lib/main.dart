@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // import widgets
-import 'package:app/widgets/appBottomBar/appBottomBar.dart';
+import 'package:app/screens/main/main-screen.dart';
 
 void main() => runApp(ElaisaApp());
 
@@ -14,7 +14,7 @@ class ElaisaApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.white,
       ),
-      home: AppBottomBar()
+      home: MainScreen()
     );
   }
 }
