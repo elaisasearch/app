@@ -25,6 +25,7 @@ class MainDrawer extends StatelessWidget {
           ),
           Expanded(
             child: ListView(
+              padding: EdgeInsets.zero,
               children: <Widget>[
                 ListTile(
                   leading: Icon(Icons.school),
