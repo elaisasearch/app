@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // import widgets
-import 'package:app/screens/home/widgets/searchDropDown.dart';
+import 'package:app/screens/search/widgets/searchDropDown.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -11,6 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   @override
   Widget build(BuildContext context) {
 
@@ -25,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
         hintText: 'Search for documents'
       ),
     );
-
 
     return Scaffold(
       backgroundColor: Colors.white,
