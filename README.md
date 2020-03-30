@@ -4,4 +4,4 @@ This repository contains the [Flutter](https://flutter.dev) code to build the IO
 
 ## Example Screen
 
-![Home Screen](docs/images/app_example_home_screen.png)
+<img src="docs/images/app_example_home_screen.png" width="50%"></img>
