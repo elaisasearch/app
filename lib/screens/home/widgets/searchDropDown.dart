@@ -36,6 +36,8 @@ class _SearchDropDownState extends State<SearchDropDown> {
       child: 
         Container(
           padding: EdgeInsets.symmetric(horizontal: 10.0),
+          // margin bottom to search text field
+          margin: EdgeInsets.only(bottom: 15.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15.0),
             border: Border.all(

@@ -48,8 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        SearchDropDown(dropdownValues: ['English', 'Deutsch', 'Espanol'], placeholder: 'Result Language',),
-                        SearchDropDown(dropdownValues: ['All', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'], placeholder: 'Language Level')
+                        Expanded(child: SearchDropDown(dropdownValues: ['English', 'Deutsch', 'Espanol'], placeholder: 'Result Language')),
+                        Expanded(child: SearchDropDown(dropdownValues: ['All', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'], placeholder: 'Language Level'))
                       ],
                     ),
                     searchTextField
