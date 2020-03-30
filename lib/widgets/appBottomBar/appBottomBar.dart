@@ -66,16 +66,18 @@ class _AppBottomBarState extends State<AppBottomBar> {
         backgroundColor: Colors.white,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
+            icon: Icon(Icons.search),
+            title: Text(''),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            title: Text('Bookmarks'),
+            activeIcon: Icon(Icons.bookmark),
+            icon: Icon(Icons.bookmark_border),
+            title: Text(''),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            title: Text('Profile'),
+            activeIcon: Icon(Icons.person),
+            icon: Icon(Icons.person_outline),
+            title: Text(''),
           ),
         ],
         currentIndex: _selectedIndex,
