@@ -1,4 +1,5 @@
 import 'package:app/screens/main/widgets/mainAppBar.dart';
+import 'package:app/screens/main/widgets/mainDrawer.dart';
 import 'package:flutter/material.dart';
 
 // import Screens
@@ -66,6 +67,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MainDrawer(),
       appBar: MainAppBar(),
       body: PageView(
         controller: _pageController,
