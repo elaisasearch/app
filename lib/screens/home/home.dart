@@ -21,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
       decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
         hintText: 'Search for documents'
       ),
     );
