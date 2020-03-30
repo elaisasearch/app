@@ -32,9 +32,33 @@ class _AppBottomBarState extends State<AppBottomBar> {
     });
   }
 
+  void _onMenuIconTapped() {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+
+        // transparent background and no shadow for app bar
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+
+        leading: IconButton(icon: Icon(Icons.menu), onPressed: _onMenuIconTapped),
+        actions: <Widget>[
+          CircleAvatar(
+            backgroundColor: Colors.grey,
+            radius: 48.0,
+            child: ClipOval(
+              // replace with Image.network(image-url) later
+              child: Image.asset(
+                'assets/images/alex.jpg',
+              )
+            )
+          )
+        ],
+      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
