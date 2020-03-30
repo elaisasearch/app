@@ -14,65 +14,75 @@ class ResultsScreen extends StatefulWidget {
   // declare a field that holds the search information
   final Search search;
 
-  // state
-  SearchResponse searchResponse;
-  APIResponse apiResponse;
-  DocumentsResponse documentsResponse;
-  DocumentItemResponse documentItemResponse;
-
   // in the contructor, require the search information
   ResultsScreen({Key key, @required this.search}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ResultsScreenState(this);
+  _ResultsScreenState createState() => _ResultsScreenState(search);
+}
 
-  void _search() async {
+class _ResultsScreenState extends State<ResultsScreen> {
+  Search search;
+
+  // state
+  SearchAPIResponse searchAPIResponse;
+  bool waiting = true;
+
+  // documents list
+  List documents = [];
+
+  _search(Search search) async {
     final response = await http.get(
         'https://api.elaisa.org/find?query=${search.query}&language=${search.language}&level=${search.level}&key=mY6qXTRUczbx3Fav');
 
     if (response.statusCode == 200) {
-
       // parse Elaisa API result to objects
-      apiResponse = APIResponse.fromJson(json.decode(response.body));
-      searchResponse = SearchResponse.fromJson(json.decode(apiResponse.result));
+      searchAPIResponse =
+          SearchAPIResponse.fromJson(json.decode(response.body));
+      documents = searchAPIResponse.result['documents']['items'];
 
-      print(documentsResponse.length);
-
-
+      setState(() {
+        waiting = false;
+      });
     } else {
       print('failed. status code is ${response.statusCode}');
     }
   }
 
-  void onLoad(BuildContext context) {_search();}
+  // call search function after contructor is loaded
+  _ResultsScreenState(Search search) : super() {
+    _search(search);
+  }
+
+  // when waiting for API response, show circular progress
+  _buildBody() {
+    if (waiting) {
+      return Center(
+        child: 
+          CircularProgressIndicator(
+          backgroundColor: Colors.white,
+          valueColor:  AlwaysStoppedAnimation<Color>(Colors.black12),
+        )
+      );
+    } else {
+      // show list of results after API response is fetched
+      return ListView(
+        children: documents
+            .map((doc) => Card(
+                  child: ListTile(title: Text(doc['url'])),
+                ))
+            .toList(),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext contexrt) {
     return Center(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        drawer: MainDrawer(),
-        appBar: MainAppBar(),
-        body: ListView(
-          children: <Widget>[
-            Card(child: ListTile(title: Text(search.query),),)
-          ],
-        ),
-      )
-
-    );
+        child: Scaffold(
+            backgroundColor: Colors.white,
+            drawer: MainDrawer(),
+            appBar: MainAppBar(),
+            body: _buildBody()));
   }
-}
-
-class _ResultsScreenState extends State<ResultsScreen> {
-  ResultsScreen resultsScreen;
-  _ResultsScreenState(this.resultsScreen);
-
-  // build the screen after it is loading. This is handled by the State widget.
-  // Source: https://stackoverflow.com/questions/49466556/flutter-run-method-on-widget-build-complete
-  @override
-  Widget build(BuildContext context) => resultsScreen.build(context);
-
-  @override
-  void initState() => resultsScreen.onLoad(context);
 }
