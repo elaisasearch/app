@@ -25,30 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
   String _language = 'en';
   String _level = 'all';
 
-  // word index api response model
-  // static WordIndexAPIResponse wordIndexAPIResponse;
-  // List wordIndex;
-
-  // static _getWordIndex() async {
-  //   final response = await http.get('https://api.elaisa.org/getwords');
-
-  //   if (response.statusCode == 200) {
-  //     // parse Elaisa API result to objects
-  //     wordIndexAPIResponse =
-  //         WordIndexAPIResponse.fromJson(json.decode(response.body));
-
-  //     return wordIndexAPIResponse.result;
-  //   } else {
-  //     print('failed. status code is ${response.statusCode}');
-  //     return [];
-  //   }
-  // }
-
-  // _HomeScreenState()
-  //     : wordIndex = _getWordIndex()
-  //         ..sort((w1, w2) =>
-  //           w1['word'].toLowerCase().compare(w2['word'].toLowerCase())),
-  //       super();
   final List<String> kWords;
   DocumentSearchDelegate documentSearchDelegate;
 
@@ -128,14 +104,6 @@ class DocumentSearchDelegate extends SearchDelegate {
 
   // documents list
   List documents = [];
-
-  // final List _wordIndex;
-  // final List _searchHistory;
-
-  // DocumentSearchDelegate(List wordIndex)
-  //     : _wordIndex = wordIndex,
-  //       _searchHistory = ['football', 'summer'],
-  //       super();
 
   final List<String> _words;
   final List<String> _history;
