@@ -4,8 +4,8 @@ class MainState with ChangeNotifier {
   MainState();
 
   String _query = '';
-  String _language;
-  String _level;
+  String _language = '';
+  String _level = '';
 
   void setQuery(String q) {
     _query = q;
