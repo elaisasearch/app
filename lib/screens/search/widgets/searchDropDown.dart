@@ -1,37 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class SearchDropDown extends StatefulWidget {
+// state management
+import 'package:app/providers/mainProvider.dart';
+
+class SearchDropDown extends StatelessWidget {
 
   // props
   final List<String> dropdownValues;
   final String placeholder; 
+  final String type;
 
   // constructor
-  const SearchDropDown({
+  SearchDropDown({
     List<String> dropdownValues,
-    String placeholder
-  }) : this.dropdownValues = dropdownValues, this.placeholder = placeholder;
+    String placeholder,
+    String type
+  }) : this.dropdownValues = dropdownValues, this.placeholder = placeholder, this.type = type;
 
-  // create state
-  @override
-  _SearchDropDownState createState() => new _SearchDropDownState(dropdownValues, placeholder);
-}
-
-class _SearchDropDownState extends State<SearchDropDown> {
-
-  // get properties from constructor
-  _SearchDropDownState(
-    this.dropdownValues,
-    this.placeholder
-  );
-  final List<String> dropdownValues;
-  final String placeholder;
-
-  // selected value from the dropdown menu
   String _value;
 
   @override
   Widget build(BuildContext context) {
+    // state
+    final MainState mainState = Provider.of(context);
+
+    if (this.type == 'level') {
+      _value = mainState.getLevel;
+    } else {
+      _value = mainState.getLanguage;
+    }
+
     return Center(
       child: 
         Container(
@@ -53,9 +52,8 @@ class _SearchDropDownState extends State<SearchDropDown> {
                         ))
                   .toList(),
                 onChanged: (String value) {
-                  setState(() {
-                    _value = value;
-                  });
+                  // set the state on change
+                  this.type == 'level' ? mainState.setLevel(value) : mainState.setLanguage(value);
                 },
                 value: _value,
                 hint: Text(this.placeholder),
