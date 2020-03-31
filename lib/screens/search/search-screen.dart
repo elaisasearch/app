@@ -44,7 +44,7 @@ class _SearchScreenState extends State<SearchScreen> {
     final searchTextField = TextField(
         controller: TextEditingController(text: _query),
         keyboardType: TextInputType.text,
-        //autofocus: true,
+        autofocus: false,
         decoration: InputDecoration(
             contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
             border:
@@ -53,6 +53,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
             hintText: 'Search for documents'),
         textInputAction: TextInputAction.search,
+        onChanged: (_) {
+          showSearch(context: context, delegate:  DocumentSearchDelegate(kWords), query: _query);
+        },
         onTap: () async {
           // open the search delegate screen on tap
           // store the search delegate text field value to the _query variable when the user closes the search delegate
