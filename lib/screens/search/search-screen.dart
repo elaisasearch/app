@@ -21,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String _query;
+  String _query = '';
   String _language = 'en';
   String _level = 'all';
 
@@ -36,7 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     // create search text field
-    final searchTextField = TextFormField(
+    final searchTextField = TextField(
+      controller: TextEditingController(text: _query),
       keyboardType: TextInputType.text,
       //autofocus: true,
       decoration: InputDecoration(
@@ -46,8 +47,10 @@ class _HomeScreenState extends State<HomeScreen> {
               OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
           hintText: 'Search for documents'),
       textInputAction: TextInputAction.search,
-      onTap: () {
-        showSearch(context: context, delegate: DocumentSearchDelegate(kWords));
+      onTap: () async {
+        // open the search delegate screen on tap
+        // store the search delegate text field value to the _query variable when the user closes the search delegate
+        _query = await showSearch(context: context, delegate: DocumentSearchDelegate(kWords), query: _query);
       }
     );
 
@@ -95,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class DocumentSearchDelegate extends SearchDelegate {
+class DocumentSearchDelegate extends SearchDelegate<String> {
   Search search;
 
   // state
@@ -112,6 +115,7 @@ class DocumentSearchDelegate extends SearchDelegate {
       : _words = words,
         _history = <String>['summer', 'football'],
         super();
+
 
   _search(Search search) async {
     final response = await http.get(
@@ -152,6 +156,10 @@ class DocumentSearchDelegate extends SearchDelegate {
     }
   }
 
+  // set the hint text in the delegate search field
+  @override
+  String get searchFieldLabel => 'Search for documents';
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return <Widget>[
@@ -184,7 +192,7 @@ class DocumentSearchDelegate extends SearchDelegate {
       ),
       onPressed: () {
         // take control back to previous page
-        this.close(context, null);
+        this.close(context, query);
       },
     );
   }
