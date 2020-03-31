@@ -29,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   DocumentSearchDelegate documentSearchDelegate;
 
   _HomeScreenState()
+      // initialize english word suggestions in a sorted list
       : kWords = List.from(Set.from(words.all))
           ..sort((w1, w2) => w1.toLowerCase().compareTo(w2.toLowerCase())),
         super();
@@ -194,6 +195,7 @@ class DocumentSearchDelegate extends SearchDelegate {
     _search(new Search(query, 'en', 'all'));
     // TODO: handle state change if _search is done async. Show CircularProgress while search is running.
     return ListView(
+      // for every item in the found documents list, render the list item
       children: documents
           .map((doc) => ResultListItem(
               url: doc['url'],
