@@ -150,9 +150,6 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
         super();
 
   _search(Search search) async {
-    print(search.language);
-    print(search.level);
-    print(search.query);
 
     final response = await http.get(
         'https://api.elaisa.org/find?query=${search.query}&language=${search.language}&level=${search.level}&key=mY6qXTRUczbx3Fav');
