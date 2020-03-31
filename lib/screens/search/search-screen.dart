@@ -209,10 +209,6 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
     // state
     final MainState mainState = Provider.of(context);
 
-    print(mainState.getQuery);
-    print(mainState.getLanguage);
-    print(mainState.getLevel);
-
     return FutureBuilder(
         future: _search(
             new Search(query, mainState.getLanguage, mainState.getLevel)),
