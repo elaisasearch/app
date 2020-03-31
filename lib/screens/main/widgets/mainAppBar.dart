@@ -24,16 +24,7 @@ class MainAppBar extends StatelessWidget with PreferredSizeWidget{
           );
         },
       ),
-      actions: <Widget>[
-        CircleAvatar(
-            backgroundColor: Colors.grey,
-            radius: 48.0,
-            child: ClipOval(
-                // replace with Image.network(image-url) later
-                child: Image.asset(
-              'assets/images/alex.jpg',
-            )))
-      ],
+      actions: <Widget>[],
     );
   }
 }
