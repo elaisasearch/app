@@ -37,22 +37,25 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     // create search text field
     final searchTextField = TextField(
-      controller: TextEditingController(text: _query),
-      keyboardType: TextInputType.text,
-      //autofocus: true,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-          focusedBorder:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-          hintText: 'Search for documents'),
-      textInputAction: TextInputAction.search,
-      onTap: () async {
-        // open the search delegate screen on tap
-        // store the search delegate text field value to the _query variable when the user closes the search delegate
-        _query = await showSearch(context: context, delegate: DocumentSearchDelegate(kWords), query: _query);
-      }
-    );
+        controller: TextEditingController(text: _query),
+        keyboardType: TextInputType.text,
+        //autofocus: true,
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
+            focusedBorder:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
+            hintText: 'Search for documents'),
+        textInputAction: TextInputAction.search,
+        onTap: () async {
+          // open the search delegate screen on tap
+          // store the search delegate text field value to the _query variable when the user closes the search delegate
+          _query = await showSearch(
+              context: context,
+              delegate: DocumentSearchDelegate(kWords),
+              query: _query);
+        });
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -116,7 +119,6 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
         _history = <String>['summer', 'football'],
         super();
 
-
   _search(Search search) async {
     final response = await http.get(
         'https://api.elaisa.org/find?query=${search.query}&language=${search.language}&level=${search.level}&key=mY6qXTRUczbx3Fav');
@@ -128,31 +130,6 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
       documents = searchAPIResponse.result['documents']['items'];
     } else {
       print('failed. status code is ${response.statusCode}');
-    }
-  }
-
-  // when waiting for API response, show circular progress
-  _buildBody() {
-    print(waiting);
-    if (waiting) {
-      return Center(
-          child: CircularProgressIndicator(
-        backgroundColor: Colors.white,
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.black12),
-      ));
-    } else {
-      // show list of results after API response is fetched
-      return ListView(
-        children: documents
-            .map((doc) => ResultListItem(
-                url: doc['url'],
-                meta: doc['meta'],
-                title: doc['title'],
-                level: doc['level'],
-                levelMeta: doc['level_meta'],
-                pagerank: doc['pagerank']))
-            .toList(),
-      );
     }
   }
 
@@ -199,20 +176,30 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    _search(new Search(query, 'en', 'all'));
-    // TODO: handle state change if _search is done async. Show CircularProgress while search is running.
-    return ListView(
-      // for every item in the found documents list, render the list item
-      children: documents
-          .map((doc) => ResultListItem(
-              url: doc['url'],
-              meta: doc['meta'],
-              title: doc['title'],
-              level: doc['level'],
-              levelMeta: doc['level_meta'],
-              pagerank: doc['pagerank']))
-          .toList(),
-    );
+    return FutureBuilder(
+        future: _search(new Search(query, 'en', 'all')),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          
+          // check if snapshot has state waiting or is done
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+                child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.grey[400]),
+            ));
+          }
+          return ListView(
+            // for every item in the found documents list, render the list item
+            children: documents
+                .map((doc) => ResultListItem(
+                    url: doc['url'],
+                    meta: doc['meta'],
+                    title: doc['title'],
+                    level: doc['level'],
+                    levelMeta: doc['level_meta'],
+                    pagerank: doc['pagerank']))
+                .toList(),
+          );
+        });
   }
 
   @override
