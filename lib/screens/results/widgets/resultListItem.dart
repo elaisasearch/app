@@ -65,12 +65,6 @@ class ResultListItem extends StatelessWidget {
                         children: <Widget>[
                           Container(
                               padding: new EdgeInsets.all(10.0),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(2.0),
-                                  border: Border.all(
-                                    width: 1.0,
-                                    color: Colors.grey[400],
-                                  )),
                               child: Column(children: <Widget>[
                                 Row(
                                   children: <Widget>[
