@@ -57,9 +57,10 @@ class ResultListItem extends StatelessWidget {
                   Container(
                       margin: const EdgeInsets.only(top: 10.0),
                       child: ExpansionTile(
+                        trailing: Icon(Icons.insert_chart, color: Colors.grey[700],),
                         title: null,
                         leading: IconButton(
-                          icon: Icon(Icons.bookmark_border),
+                          icon: Icon(Icons.bookmark_border, color: Colors.grey[700],),
                           onPressed: () {},
                         ),
                         children: <Widget>[
