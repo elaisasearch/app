@@ -17,7 +17,6 @@ import 'package:app/models/searchModel.dart';
 import 'package:app/screens/search/widgets/searchDropDown.dart';
 import 'package:app/screens/results/widgets/resultListItem.dart';
 
-
 class SearchScreen extends StatefulWidget {
   SearchScreen({Key key}) : super(key: key);
 
@@ -26,7 +25,6 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-
   final List<String> kWords;
 
   _SearchScreenState()
@@ -37,7 +35,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     // state
     final MainState mainState = Provider.of(context);
 
@@ -89,21 +86,39 @@ class _SearchScreenState extends State<SearchScreen> {
                         Row(
                           children: <Widget>[
                             Expanded(
-                                child: SearchDropDown(dropdownValues: [
-                              'English',
-                              'Deutsch',
-                              'Espanol'
-                            ], placeholder: 'Result Language', type: 'language',)),
+                                child: SearchDropDown(
+                              dropdownValues: <String>['en', 'de', 'es'],
+                              dropdownItems: <String>[
+                                'English',
+                                'Deutsch',
+                                'Espanol'
+                              ],
+                              placeholder: 'Result Language',
+                              type: 'language',
+                            )),
                             Expanded(
-                                child: SearchDropDown(dropdownValues: [
-                              'All',
-                              'A1',
-                              'A2',
-                              'B1',
-                              'B2',
-                              'C1',
-                              'C2'
-                            ], placeholder: 'Language Level', type: 'level',))
+                                child: SearchDropDown(
+                              dropdownValues: <String>[
+                                'all',
+                                'A1',
+                                'A2',
+                                'B1',
+                                'B2',
+                                'C1',
+                                'C2'
+                              ],
+                              dropdownItems: <String>[
+                                'All',
+                                'A1',
+                                'A2',
+                                'B1',
+                                'B2',
+                                'C1',
+                                'C2'
+                              ],
+                              placeholder: 'Language Level',
+                              type: 'level',
+                            ))
                           ],
                         ),
                         searchTextField
@@ -131,6 +146,10 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
         super();
 
   _search(Search search) async {
+    print(search.language);
+    print(search.level);
+    print(search.query);
+
     final response = await http.get(
         'https://api.elaisa.org/find?query=${search.query}&language=${search.language}&level=${search.level}&key=mY6qXTRUczbx3Fav');
 
@@ -187,10 +206,17 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
+    // state
+    final MainState mainState = Provider.of(context);
+
+    print(mainState.getQuery);
+    print(mainState.getLanguage);
+    print(mainState.getLevel);
+
     return FutureBuilder(
-        future: _search(new Search(query, 'en', 'all')),
+        future: _search(
+            new Search(query, mainState.getLanguage, mainState.getLevel)),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          
           // check if snapshot has state waiting or is done
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
