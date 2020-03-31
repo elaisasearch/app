@@ -241,7 +241,7 @@ class _WordSuggestionList extends StatelessWidget {
       itemBuilder: (BuildContext context, int i) {
         final String suggestion = suggestions[i];
         return ListTile(
-          leading: query.isEmpty ? Icon(Icons.history) : Icon(null),
+          leading: query.isEmpty ? Icon(Icons.history) : Icon(Icons.search),
           // Highlight the substring that matched the query.
           title: RichText(
             text: TextSpan(
