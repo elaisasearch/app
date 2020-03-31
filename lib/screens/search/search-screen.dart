@@ -1,10 +1,14 @@
 import 'package:app/models/searchResponseModel.dart';
 import 'package:app/models/wordsResponseModel.dart';
+import 'package:app/providers/mainProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:english_words/english_words.dart' as words;
+
+// state management
+import 'package:provider/provider.dart';
 
 // import models
 import 'package:app/models/searchModel.dart';
@@ -12,6 +16,7 @@ import 'package:app/models/searchModel.dart';
 // import widgets
 import 'package:app/screens/search/widgets/searchDropDown.dart';
 import 'package:app/screens/results/widgets/resultListItem.dart';
+
 
 class SearchScreen extends StatefulWidget {
   SearchScreen({Key key}) : super(key: key);
@@ -21,9 +26,6 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  String _query = '';
-  String _language = 'en';
-  String _level = 'all';
 
   final List<String> kWords;
 
@@ -35,6 +37,12 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    // state
+    final MainState mainState = Provider.of(context);
+
+    String _query = mainState.getQuery;
+
     // create search text field
     final searchTextField = TextField(
         controller: TextEditingController(text: _query),
@@ -55,6 +63,9 @@ class _SearchScreenState extends State<SearchScreen> {
               context: context,
               delegate: DocumentSearchDelegate(kWords),
               query: _query);
+
+          // store _query to state
+          mainState.setQuery(_query);
         });
 
     return Scaffold(
@@ -82,7 +93,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               'English',
                               'Deutsch',
                               'Espanol'
-                            ], placeholder: 'Result Language')),
+                            ], placeholder: 'Result Language', type: 'language',)),
                             Expanded(
                                 child: SearchDropDown(dropdownValues: [
                               'All',
@@ -92,7 +103,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               'B2',
                               'C1',
                               'C2'
-                            ], placeholder: 'Language Level'))
+                            ], placeholder: 'Language Level', type: 'level',))
                           ],
                         ),
                         searchTextField
