@@ -73,9 +73,9 @@ class _MainScreenState extends State<MainScreen> {
         controller: _pageController,
         onPageChanged: _onPageChanged,
         children: <Widget>[
-          HomeScreen(key: _pageKeys[0]),
-          HomeScreen(key: _pageKeys[1]),
-          HomeScreen(key: _pageKeys[2]),
+          SearchScreen(key: _pageKeys[0]),
+          SearchScreen(key: _pageKeys[1]),
+          SearchScreen(key: _pageKeys[2]),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

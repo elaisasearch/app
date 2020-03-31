@@ -13,21 +13,21 @@ import 'package:app/models/searchModel.dart';
 import 'package:app/screens/search/widgets/searchDropDown.dart';
 import 'package:app/screens/results/widgets/resultListItem.dart';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({Key key}) : super(key: key);
+class SearchScreen extends StatefulWidget {
+  SearchScreen({Key key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _SearchScreenState createState() => _SearchScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _SearchScreenState extends State<SearchScreen> {
   String _query = '';
   String _language = 'en';
   String _level = 'all';
 
   final List<String> kWords;
 
-  _HomeScreenState()
+  _SearchScreenState()
       // initialize english word suggestions in a sorted list
       : kWords = List.from(Set.from(words.all))
           ..sort((w1, w2) => w1.toLowerCase().compareTo(w2.toLowerCase())),
