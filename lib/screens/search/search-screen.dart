@@ -1,6 +1,7 @@
 import 'package:app/models/searchResponseModel.dart';
 import 'package:app/models/wordsResponseModel.dart';
 import 'package:app/providers/mainProvider.dart';
+import 'package:app/screens/search/widgets/searchAlert.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -230,6 +231,13 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
   Widget buildResults(BuildContext context) {
     // state
     final MainState mainState = Provider.of(context);
+
+    // return alert if language or level aren't defined
+    if (mainState.getLanguage == '') {
+      return SearchAlert(title: 'Result Language is missing', content: 'Please define a result language for your search.',);
+    } else if (mainState.getLevel == '') {
+      return SearchAlert(title: 'Language Level is missing', content: 'Please define a language level for your search.',);
+    }
 
     return FutureBuilder(
         future: _search(
