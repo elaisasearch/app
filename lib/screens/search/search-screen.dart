@@ -1,14 +1,16 @@
 import 'package:app/models/searchResponseModel.dart';
+import 'package:app/models/wordsResponseModel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:english_words/english_words.dart' as words;
 
 // import models
 import 'package:app/models/searchModel.dart';
 
 // import widgets
 import 'package:app/screens/search/widgets/searchDropDown.dart';
-import 'package:app/screens/results/results-screen.dart';
 import 'package:app/screens/results/widgets/resultListItem.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,6 +24,38 @@ class _HomeScreenState extends State<HomeScreen> {
   String _query;
   String _language = 'en';
   String _level = 'all';
+
+  // word index api response model
+  // static WordIndexAPIResponse wordIndexAPIResponse;
+  // List wordIndex;
+
+  // static _getWordIndex() async {
+  //   final response = await http.get('https://api.elaisa.org/getwords');
+
+  //   if (response.statusCode == 200) {
+  //     // parse Elaisa API result to objects
+  //     wordIndexAPIResponse =
+  //         WordIndexAPIResponse.fromJson(json.decode(response.body));
+
+  //     return wordIndexAPIResponse.result;
+  //   } else {
+  //     print('failed. status code is ${response.statusCode}');
+  //     return [];
+  //   }
+  // }
+
+  // _HomeScreenState()
+  //     : wordIndex = _getWordIndex()
+  //         ..sort((w1, w2) =>
+  //           w1['word'].toLowerCase().compare(w2['word'].toLowerCase())),
+  //       super();
+  final List<String> kWords;
+  DocumentSearchDelegate documentSearchDelegate;
+
+  _HomeScreenState()
+      : kWords = List.from(Set.from(words.all))
+          ..sort((w1, w2) => w1.toLowerCase().compareTo(w2.toLowerCase())),
+        super();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
           hintText: 'Search for documents'),
       textInputAction: TextInputAction.search,
       onChanged: (value) {
-        showSearch(context: context, delegate: DocumentSearch());
+        showSearch(context: context, delegate: DocumentSearchDelegate(kWords));
       },
     );
 
@@ -85,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class DocumentSearch extends SearchDelegate {
+class DocumentSearchDelegate extends SearchDelegate {
   Search search;
 
   // state
@@ -94,6 +128,22 @@ class DocumentSearch extends SearchDelegate {
 
   // documents list
   List documents = [];
+
+  // final List _wordIndex;
+  // final List _searchHistory;
+
+  // DocumentSearchDelegate(List wordIndex)
+  //     : _wordIndex = wordIndex,
+  //       _searchHistory = ['football', 'summer'],
+  //       super();
+
+  final List<String> _words;
+  final List<String> _history;
+
+  DocumentSearchDelegate(List<String> words)
+      : _words = words,
+        _history = <String>['summer', 'football'],
+        super();
 
   _search(Search search) async {
     final response = await http.get(
@@ -136,11 +186,23 @@ class DocumentSearch extends SearchDelegate {
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: Icon(Icons.clear),
-        onPressed: () {},
-      )
+    return <Widget>[
+      query.isNotEmpty
+          ? IconButton(
+              tooltip: 'Clear',
+              icon: const Icon(Icons.clear),
+              onPressed: () {
+                query = '';
+                showSuggestions(context);
+              },
+            )
+          : IconButton(
+              icon: const Icon(Icons.mic),
+              tooltip: 'Voice input',
+              onPressed: () {
+                this.query = 'TBW: Get input from voice';
+              },
+            ),
     ];
   }
 
@@ -178,6 +240,56 @@ class DocumentSearch extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Container();
+    final Iterable<String> suggestions = this.query.isEmpty
+        ? _history
+        : _words.where((word) => word.startsWith(query));
+
+    return _WordSuggestionList(
+      query: this.query,
+      suggestions: suggestions.toList(),
+      onSelected: (String suggestion) {
+        this.query = suggestion;
+        this._history.insert(0, suggestion);
+        showResults(context);
+      },
+    );
+  }
+}
+
+class _WordSuggestionList extends StatelessWidget {
+  const _WordSuggestionList({this.suggestions, this.query, this.onSelected});
+
+  final List<String> suggestions;
+  final String query;
+  final ValueChanged<String> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme.subhead;
+    return ListView.builder(
+      itemCount: suggestions.length,
+      itemBuilder: (BuildContext context, int i) {
+        final String suggestion = suggestions[i];
+        return ListTile(
+          leading: query.isEmpty ? Icon(Icons.history) : Icon(null),
+          // Highlight the substring that matched the query.
+          title: RichText(
+            text: TextSpan(
+              text: suggestion.substring(0, query.length),
+              style: textTheme.copyWith(fontWeight: FontWeight.bold),
+              children: <TextSpan>[
+                TextSpan(
+                  text: suggestion.substring(query.length),
+                  style: textTheme,
+                ),
+              ],
+            ),
+          ),
+          onTap: () {
+            onSelected(suggestion);
+          },
+        );
+      },
+    );
   }
 }
