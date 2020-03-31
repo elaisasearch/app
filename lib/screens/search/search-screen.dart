@@ -163,6 +163,25 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
     }
   }
 
+  Widget _buildResults() {
+    if (documents.length > 0) {
+      return ListView(
+            // for every item in the found documents list, render the list item
+            children: documents
+                .map((doc) => ResultListItem(
+                    url: doc['url'],
+                    meta: doc['meta'],
+                    title: doc['title'],
+                    level: doc['level'],
+                    levelMeta: doc['level_meta'],
+                    pagerank: doc['pagerank']))
+                .toList(),
+          );
+    } else {
+      return Center(child: Icon(Icons.search, size: 120.0, color: Colors.grey[400],));
+    }
+  }
+
   // set the hint text in the delegate search field
   @override
   String get searchFieldLabel => 'Search for documents';
@@ -220,18 +239,7 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
               valueColor: AlwaysStoppedAnimation<Color>(Colors.grey[400]),
             ));
           }
-          return ListView(
-            // for every item in the found documents list, render the list item
-            children: documents
-                .map((doc) => ResultListItem(
-                    url: doc['url'],
-                    meta: doc['meta'],
-                    title: doc['title'],
-                    level: doc['level'],
-                    levelMeta: doc['level_meta'],
-                    pagerank: doc['pagerank']))
-                .toList(),
-          );
+          return _buildResults();
         });
   }
 
