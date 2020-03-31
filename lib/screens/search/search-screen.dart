@@ -26,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
   String _level = 'all';
 
   final List<String> kWords;
-  DocumentSearchDelegate documentSearchDelegate;
 
   _HomeScreenState()
       // initialize english word suggestions in a sorted list
@@ -47,9 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
               OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
           hintText: 'Search for documents'),
       textInputAction: TextInputAction.search,
-      onChanged: (value) {
+      onTap: () {
         showSearch(context: context, delegate: DocumentSearchDelegate(kWords));
-      },
+      }
     );
 
     return Scaffold(
