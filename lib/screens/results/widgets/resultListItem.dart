@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
-// import models
-import 'package:app/models/searchResponseModel.dart';
-
 class ResultListItem extends StatelessWidget {
-
   final String url;
   //final Meta meta;
   final meta;
@@ -15,7 +11,7 @@ class ResultListItem extends StatelessWidget {
   final double pagerank;
 
   ResultListItem({
-    Key key, 
+    Key key,
     @required this.url,
     @required this.meta,
     @required this.title,
@@ -24,16 +20,103 @@ class ResultListItem extends StatelessWidget {
     @required this.pagerank,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-
     return Card(
-      child: 
-      ListTile(
-        title: Text(title),
-        subtitle: Text(url)
-      )
-    );
+        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+                // align content left
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    '${url.substring(0, 30)}...',
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: Colors.green[600],
+                    ),
+                  ),
+                  Container(
+                      margin: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueAccent),
+                      )),
+                  Container(
+                      margin: const EdgeInsets.only(top: 10.0),
+                      child: Text(meta['desc'],
+                          style: TextStyle(
+                              color: Colors.grey[700], fontSize: 12))),
+                  Container(
+                      margin: const EdgeInsets.only(top: 10.0),
+                      child: ExpansionTile(
+                        title: null,
+                        leading: IconButton(
+                          icon: Icon(Icons.bookmark_border),
+                          onPressed: () {},
+                        ),
+                        children: <Widget>[
+                          Container(
+                              padding: new EdgeInsets.all(10.0),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(2.0),
+                                  border: Border.all(
+                                    width: 1.0,
+                                    color: Colors.grey[400],
+                                  )),
+                              child: Column(children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Text('Language Level: ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    Text(level)
+                                  ],
+                                ),
+                                Container(
+                                    padding: const EdgeInsets.only(top: 15.0),
+                                    alignment: Alignment.topLeft,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text('Language Level distribution: ',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold)),
+                                        Padding(
+                                            padding: new EdgeInsets.only(
+                                                top: 10.0, bottom: 10.0),
+                                            child: Text(
+                                                "A1:\t\t ${levelMeta['A1']}%,\nA2:\t\t${levelMeta['A2']}%,\nB1:\t\t ${levelMeta['B1']}%,\nB2:\t\t${levelMeta['B2']}%,\nC1:\t\t ${levelMeta['C1']}%,\nC2:\t\t${levelMeta['C2']}%")),
+                                        Row(
+                                          children: <Widget>[
+                                            Text('Word Length: ',
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            Text(
+                                              // capitalize first letter of difficulty
+                                              // Returns: Easy | Hard
+                                              '${levelMeta['difficulty'][0].toUpperCase()}${levelMeta['difficulty'].substring(1)}',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: levelMeta['difficulty'] == 'easy' ? Colors.green : Colors.red
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ))
+                              ]))
+                        ],
+                      ))
+                ])));
   }
 }
