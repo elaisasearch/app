@@ -1,5 +1,4 @@
 import 'package:app/models/searchResponseModel.dart';
-import 'package:app/models/wordsResponseModel.dart';
 import 'package:app/providers/mainProvider.dart';
 import 'package:app/screens/search/widgets/searchAlert.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +12,14 @@ import 'package:provider/provider.dart';
 
 // import models
 import 'package:app/models/searchModel.dart';
+import 'package:app/models/wikipediaModel.dart';
+import 'package:app/models/wordsResponseModel.dart';
+import 'package:app/models/searchResponseModel.dart';
 
 // import widgets
 import 'package:app/screens/search/widgets/searchDropDown.dart';
 import 'package:app/screens/results/widgets/resultListItem.dart';
+import 'package:app/screens/results/widgets/wikipedia.dart';
 
 class SearchScreen extends StatefulWidget {
   SearchScreen({Key key}) : super(key: key);
@@ -55,7 +58,10 @@ class _SearchScreenState extends State<SearchScreen> {
             hintText: 'Search for documents'),
         textInputAction: TextInputAction.search,
         onChanged: (_) {
-          showSearch(context: context, delegate:  DocumentSearchDelegate(kWords), query: _query);
+          showSearch(
+              context: context,
+              delegate: DocumentSearchDelegate(kWords),
+              query: _query);
         },
         onTap: () async {
           // open the search delegate screen on tap
@@ -140,6 +146,7 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
 
   // documents list
   List documents = [];
+  Wiki wikipedia;
 
   final List<String> _words;
   final List<String> _history;
@@ -150,7 +157,6 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
         super();
 
   _search(Search search) async {
-
     final response = await http.get(
         'https://api.elaisa.org/find?query=${search.query}&language=${search.language}&level=${search.level}&key=mY6qXTRUczbx3Fav');
 
@@ -159,6 +165,10 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
       searchAPIResponse =
           SearchAPIResponse.fromJson(json.decode(response.body));
       documents = searchAPIResponse.result['documents']['items'];
+      wikipedia = new Wiki(
+          url: searchAPIResponse.result['wikipedia']['url'],
+          title: searchAPIResponse.result['wikipedia']['title'],
+          summary: searchAPIResponse.result['wikipedia']['summary']);
     } else {
       print('failed. status code is ${response.statusCode}');
     }
@@ -166,7 +176,20 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
 
   Widget _buildResults() {
     if (documents.length > 0) {
-      return ListView(
+      return Column(
+        // TODO: Make this scrollable
+        children: <Widget>[
+          // show wikipedia entry card if wikipedia information is provided
+          wikipedia.url != null 
+          ? 
+          Wikipedia(
+              url: wikipedia.url,
+              title: wikipedia.title,
+              summary: wikipedia.summary)
+          : null,
+          Expanded(
+            child: ListView(
+            scrollDirection: Axis.vertical,
             // for every item in the found documents list, render the list item
             children: documents
                 .map((doc) => ResultListItem(
@@ -177,9 +200,16 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
                     levelMeta: doc['level_meta'],
                     pagerank: doc['pagerank']))
                 .toList(),
-          );
+          ))
+        ],
+      );
     } else {
-      return Center(child: Icon(Icons.search, size: 120.0, color: Colors.grey[400],));
+      return Center(
+          child: Icon(
+        Icons.search,
+        size: 120.0,
+        color: Colors.grey[400],
+      ));
     }
   }
 
@@ -231,9 +261,15 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
 
     // return alert if language or level aren't defined
     if (mainState.getLanguage == '') {
-      return SearchAlert(title: 'Result Language is missing', content: 'Please define a result language for your search.',);
+      return SearchAlert(
+        title: 'Result Language is missing',
+        content: 'Please define a result language for your search.',
+      );
     } else if (mainState.getLevel == '') {
-      return SearchAlert(title: 'Language Level is missing', content: 'Please define a language level for your search.',);
+      return SearchAlert(
+        title: 'Language Level is missing',
+        content: 'Please define a language level for your search.',
+      );
     }
 
     return FutureBuilder(
