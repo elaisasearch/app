@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ResultListItem extends StatelessWidget {
   final String url;
@@ -19,6 +20,15 @@ class ResultListItem extends StatelessWidget {
     @required this.levelMeta,
     @required this.pagerank,
   }) : super(key: key);
+
+  // method to open a url
+  _launchUrl(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +52,15 @@ class ResultListItem extends StatelessWidget {
                   ),
                   Container(
                       margin: const EdgeInsets.only(top: 10.0),
-                      child: Text(
-                        title,
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueAccent),
-                      )),
+                      child: GestureDetector(
+                          onTap: () {_launchUrl(url);},
+                          child: Text(
+                            title,
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blueAccent),
+                          ))),
                   Container(
                       margin: const EdgeInsets.only(top: 10.0),
                       child: Text(meta['desc'],
@@ -57,10 +69,16 @@ class ResultListItem extends StatelessWidget {
                   Container(
                       margin: const EdgeInsets.only(top: 10.0),
                       child: ExpansionTile(
-                        trailing: Icon(Icons.insert_chart, color: Colors.grey[700],),
+                        trailing: Icon(
+                          Icons.insert_chart,
+                          color: Colors.grey[700],
+                        ),
                         title: null,
                         leading: IconButton(
-                          icon: Icon(Icons.bookmark_border, color: Colors.grey[700],),
+                          icon: Icon(
+                            Icons.bookmark_border,
+                            color: Colors.grey[700],
+                          ),
                           onPressed: () {},
                         ),
                         children: <Widget>[
@@ -101,9 +119,12 @@ class ResultListItem extends StatelessWidget {
                                               // Returns: Easy | Hard
                                               '${levelMeta['difficulty'][0].toUpperCase()}${levelMeta['difficulty'].substring(1)}',
                                               style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: levelMeta['difficulty'] == 'easy' ? Colors.green : Colors.red
-                                              ),
+                                                  fontWeight: FontWeight.bold,
+                                                  color:
+                                                      levelMeta['difficulty'] ==
+                                                              'easy'
+                                                          ? Colors.green
+                                                          : Colors.red),
                                             )
                                           ],
                                         ),
