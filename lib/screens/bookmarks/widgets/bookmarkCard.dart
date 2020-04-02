@@ -52,8 +52,6 @@ class _BookmarkCardState extends State<BookmarkCard> {
   @override
   Widget build(BuildContext context) {
 
-    print(this.desc);
-
     return Card(
         margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         shape:
