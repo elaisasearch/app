@@ -45,40 +45,46 @@ class _SearchScreenState extends State<SearchScreen> {
     String _query = mainState.getQuery;
 
     // create search text field
-    final searchTextField = TextField(
-        controller: TextEditingController(text: _query),
-        keyboardType: TextInputType.text,
-        autofocus: false,
-        decoration: InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            focusedBorder:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            hintText: 'Search for documents',
-            suffixIcon: Material(
-              color: Colors.transparent,
-              child: Icon(Icons.search)
-            )    
-        ),
-        textInputAction: TextInputAction.search,
-        onChanged: (_) {
-          showSearch(
-              context: context,
-              delegate: DocumentSearchDelegate(kWords),
-              query: _query);
-        },
-        onTap: () async {
-          // open the search delegate screen on tap
-          // store the search delegate text field value to the _query variable when the user closes the search delegate
-          _query = await showSearch(
-              context: context,
-              delegate: DocumentSearchDelegate(kWords),
-              query: _query);
+    final searchTextField = Padding(
+        padding: EdgeInsets.symmetric(horizontal: 32),
+        child: Material(
+          color: Colors.white,
+            elevation: 5.0,
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+            child: TextField(
+                controller: TextEditingController(text: _query),
+                keyboardType: TextInputType.text,
+                autofocus: false,
+                style: TextStyle(color: Colors.black87),
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 25, vertical: 13),
+                    border: InputBorder.none,
+                    hintText: 'Search for documents',
+                    suffixIcon: Material(
+                      elevation: 2.0,                
+                      color: Colors.white, child: Icon(Icons.search),
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                    ),
+                  ),
+                
+                textInputAction: TextInputAction.search,
+                onChanged: (_) {
+                  showSearch(
+                      context: context,
+                      delegate: DocumentSearchDelegate(kWords),
+                      query: _query);
+                },
+                onTap: () async {
+                  // open the search delegate screen on tap
+                  // store the search delegate text field value to the _query variable when the user closes the search delegate
+                  _query = await showSearch(
+                      context: context,
+                      delegate: DocumentSearchDelegate(kWords),
+                      query: _query);
 
-          // store _query to state
-          mainState.setQuery(_query);
-        });
+                  // store _query to state
+                  mainState.setQuery(_query);
+                })));
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -182,33 +188,33 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
   Widget _buildResults() {
     if (documents.length > 0) {
       return Scaffold(
-        backgroundColor: Colors.white,
-        body: Column(
-        // TODO: Make this scrollable
-        children: <Widget>[
-          // show wikipedia entry card if wikipedia information is provided
-          wikipedia.url != null
-              ? Wikipedia(
-                  url: wikipedia.url,
-                  title: wikipedia.title,
-                  summary: wikipedia.summary)
-              : null,
-          Expanded(
-              child: ListView(
-            scrollDirection: Axis.vertical,
-            // for every item in the found documents list, render the list item
-            children: documents
-                .map((doc) => ResultListItem(
-                    url: doc['url'],
-                    meta: doc['meta'],
-                    title: doc['title'],
-                    level: doc['level'],
-                    levelMeta: doc['level_meta'],
-                    pagerank: doc['pagerank']))
-                .toList(),
-          ))
-        ],
-      ));
+          backgroundColor: Colors.white,
+          body: Column(
+            // TODO: Make this scrollable
+            children: <Widget>[
+              // show wikipedia entry card if wikipedia information is provided
+              wikipedia.url != null
+                  ? Wikipedia(
+                      url: wikipedia.url,
+                      title: wikipedia.title,
+                      summary: wikipedia.summary)
+                  : null,
+              Expanded(
+                  child: ListView(
+                scrollDirection: Axis.vertical,
+                // for every item in the found documents list, render the list item
+                children: documents
+                    .map((doc) => ResultListItem(
+                        url: doc['url'],
+                        meta: doc['meta'],
+                        title: doc['title'],
+                        level: doc['level'],
+                        levelMeta: doc['level_meta'],
+                        pagerank: doc['pagerank']))
+                    .toList(),
+              ))
+            ],
+          ));
     } else {
       return Center(
           child: Icon(
@@ -226,15 +232,17 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
   @override
   List<Widget> buildActions(BuildContext context) {
     return <Widget>[
-
       IconButton(
-              tooltip: 'Clear',
-              icon: const Icon(Icons.clear, color: Colors.black87,),
-              onPressed: () {
-                query = '';
-                showSuggestions(context);
-              },
-            )
+        tooltip: 'Clear',
+        icon: const Icon(
+          Icons.clear,
+          color: Colors.black87,
+        ),
+        onPressed: () {
+          query = '';
+          showSuggestions(context);
+        },
+      )
 
       // query.isNotEmpty
       //     ? IconButton(
@@ -296,11 +304,11 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
           // check if snapshot has state waiting or is done
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Scaffold(
-              backgroundColor: Colors.white,
-              body: Center(
-                child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.grey[400]),
-            )));
+                backgroundColor: Colors.white,
+                body: Center(
+                    child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.grey[400]),
+                )));
           }
           return _buildResults();
         });
@@ -335,31 +343,31 @@ class _WordSuggestionList extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme.subhead;
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: ListView.builder(
-      itemCount: suggestions.length,
-      itemBuilder: (BuildContext context, int i) {
-        final String suggestion = suggestions[i];
-        return ListTile(
-          leading: query.isEmpty ? Icon(Icons.history) : Icon(Icons.search),
-          // Highlight the substring that matched the query.
-          title: RichText(
-            text: TextSpan(
-              text: suggestion.substring(0, query.length),
-              style: textTheme.copyWith(fontWeight: FontWeight.bold),
-              children: <TextSpan>[
-                TextSpan(
-                  text: suggestion.substring(query.length),
-                  style: textTheme,
+        backgroundColor: Colors.white,
+        body: ListView.builder(
+          itemCount: suggestions.length,
+          itemBuilder: (BuildContext context, int i) {
+            final String suggestion = suggestions[i];
+            return ListTile(
+              leading: query.isEmpty ? Icon(Icons.history) : Icon(Icons.search),
+              // Highlight the substring that matched the query.
+              title: RichText(
+                text: TextSpan(
+                  text: suggestion.substring(0, query.length),
+                  style: textTheme.copyWith(fontWeight: FontWeight.bold),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: suggestion.substring(query.length),
+                      style: textTheme,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          onTap: () {
-            onSelected(suggestion);
+              ),
+              onTap: () {
+                onSelected(suggestion);
+              },
+            );
           },
-        );
-      },
-    ));
+        ));
   }
 }
