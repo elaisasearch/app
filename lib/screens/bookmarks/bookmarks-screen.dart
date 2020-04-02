@@ -1,5 +1,6 @@
 import 'package:app/handlers/bookmarksHandler.dart';
 import 'package:app/screens/bookmarks/widgets/bookmarkCard.dart';
+import 'package:app/screens/bookmarks/widgets/defaultBookmarkPage.dart';
 import 'package:flutter/material.dart';
 
 class BookmarksScreen extends StatefulWidget {
@@ -15,26 +16,30 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
   _buildBookmarks(bookmarks) {
     List<BookmarkCard> bookmarkCards = [];
 
-    try {
-      bookmarks['en'].forEach((bookmark) {
-        bookmarkCards.add(BookmarkCard(
-          website: bookmark['website'],
-          desc: bookmark['desc'],
-          level: bookmark['level'],
-          levelMeta: bookmark['level_meta'],
-          title: bookmark['title'],
-          date: bookmark['date'],
-        ));
-      });
+    if (bookmarks['en'].length != 0) {
+      try {
+        bookmarks['en'].forEach((bookmark) {
+          bookmarkCards.add(BookmarkCard(
+            website: bookmark['website'],
+            desc: bookmark['desc'],
+            level: bookmark['level'],
+            levelMeta: bookmark['level_meta'],
+            title: bookmark['title'],
+            date: bookmark['date'],
+          ));
+        });
 
-      return ListView(children: bookmarkCards);
-    } catch (error) {
-      return Center(
-          child: Icon(
-        Icons.bookmark,
-        size: 120.0,
-        color: Colors.grey[400],
-      ));
+        return ListView(children: bookmarkCards);
+      } catch (error) {
+        return Center(
+            child: Icon(
+          Icons.bookmark,
+          size: 120.0,
+          color: Colors.grey[400],
+        ));
+      }
+    } else {
+      return DefaultBookmarkPage();
     }
   }
 
