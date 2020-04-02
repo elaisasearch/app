@@ -180,15 +180,14 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
         // TODO: Make this scrollable
         children: <Widget>[
           // show wikipedia entry card if wikipedia information is provided
-          wikipedia.url != null 
-          ? 
-          Wikipedia(
-              url: wikipedia.url,
-              title: wikipedia.title,
-              summary: wikipedia.summary)
-          : null,
+          wikipedia.url != null
+              ? Wikipedia(
+                  url: wikipedia.url,
+                  title: wikipedia.title,
+                  summary: wikipedia.summary)
+              : null,
           Expanded(
-            child: ListView(
+              child: ListView(
             scrollDirection: Axis.vertical,
             // for every item in the found documents list, render the list item
             children: documents
