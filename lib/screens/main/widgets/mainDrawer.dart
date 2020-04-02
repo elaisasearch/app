@@ -16,8 +16,9 @@ class MainDrawer extends StatelessWidget {
     }
 
     return Drawer(
-      child: Column(
-
+      child: Container(
+        color: Colors.white,
+        child:Column(
         children: <Widget>[
           DrawerHeader(
             child: Column(
@@ -85,6 +86,6 @@ class MainDrawer extends StatelessWidget {
           )
         ],
       ),
-    );
+    ));
   }
 }

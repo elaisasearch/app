@@ -226,22 +226,32 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
   @override
   List<Widget> buildActions(BuildContext context) {
     return <Widget>[
-      query.isNotEmpty
-          ? IconButton(
+
+      IconButton(
               tooltip: 'Clear',
-              icon: const Icon(Icons.clear),
+              icon: const Icon(Icons.clear, color: Colors.black87,),
               onPressed: () {
                 query = '';
                 showSuggestions(context);
               },
             )
-          : IconButton(
-              icon: const Icon(Icons.mic),
-              tooltip: 'Voice input',
-              onPressed: () {
-                this.query = 'TBW: Get input from voice';
-              },
-            ),
+
+      // query.isNotEmpty
+      //     ? IconButton(
+      //         tooltip: 'Clear',
+      //         icon: const Icon(Icons.clear, color: Colors.black54,),
+      //         onPressed: () {
+      //           query = '';
+      //           showSuggestions(context);
+      //         },
+      //       )
+      //     : IconButton(
+      //         icon: const Icon(Icons.mic, color: ,),
+      //         tooltip: 'Voice input',
+      //         onPressed: () {
+      //           this.query = 'TBW: Get input from voice';
+      //         },
+      //       ),
     ];
   }
 
@@ -250,6 +260,7 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
     return IconButton(
       tooltip: 'Back',
       icon: AnimatedIcon(
+        color: Colors.black87,
         icon: AnimatedIcons.menu_arrow,
         progress: transitionAnimation,
       ),
@@ -284,10 +295,12 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           // check if snapshot has state waiting or is done
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return Scaffold(
+              backgroundColor: Colors.white,
+              body: Center(
                 child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.grey[400]),
-            ));
+            )));
           }
           return _buildResults();
         });
