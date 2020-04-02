@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'package:intl/intl.dart';
 
-class ResultListItem extends StatelessWidget {
+class ResultListItem extends StatefulWidget {
   final String url;
   //final Meta meta;
   final meta;
@@ -21,7 +26,140 @@ class ResultListItem extends StatelessWidget {
     @required this.pagerank,
   }) : super(key: key);
 
-  // method to open a url
+  @override
+  _ResultListItemState createState() =>
+      new _ResultListItemState(url, meta, title, level, levelMeta);
+}
+
+class _ResultListItemState extends State<ResultListItem> {
+  final String url;
+  //final Meta meta;
+  final meta;
+  final String title;
+  final String level;
+  //final LevelMeta levelMeta;
+  final levelMeta;
+
+  _ResultListItemState(
+    this.url,
+    this.meta,
+    this.title,
+    this.level,
+    this.levelMeta,
+  );
+
+  var bookmarks;
+  bool isMarked = false;
+
+  static DateTime now = DateTime.now();
+  String formattedDate = DateFormat('dd.MM.yyyy').format(now);
+
+  // get bookmarks from local storage file
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    // print(directory.path);
+    return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/bookmrks.json');
+  }
+
+  Future getBookmarks() async {
+    try {
+      final file = await _localFile;
+      // Read the file
+
+      var fileData = await file.readAsString();
+
+      if (fileData == null || fileData == '') {
+        bookmarks = {'de': [], 'en': [], 'es': []};
+      } else {
+        bookmarks = await json.decode(fileData);
+      }
+
+      return bookmarks;
+    } catch (e) {
+      // If encountering an error, return
+      return {'de': [], 'en': [], 'es': []};
+    }
+  }
+
+  Future<File> addToBookmarks() async {
+    if (this.isMarked) {
+      setState(() {
+        this.isMarked = false;
+      });
+    } else {
+      setState(() {
+        this.isMarked = true;
+      });
+
+      var newBookmark = {
+        'date': formattedDate,
+        'website': url,
+        'title': title,
+        'desc': this.meta['desc'],
+        'keywords': this.meta['keywords'],
+        'level_meta': levelMeta,
+        'level': level,
+      };
+
+      bookmarks['en'].add(newBookmark);
+    }
+
+    final file = await _localFile;
+    // Write the file
+    return file.writeAsString(json.encode(bookmarks));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getBookmarks().then((value) {
+      setState(() {
+        bookmarks = value;
+      });
+
+      bookmarks.forEach((key, value) {
+        switch (key) {
+          case 'de':
+            for (var bm in bookmarks['de']) {
+              if (bm['website'] == url) {
+                setState(() {
+                  this.isMarked = true;
+                });
+              }
+            }
+            break;
+          case 'en':
+            for (var bm in bookmarks['en']) {
+              if (bm['website'] == url) {
+                setState(() {
+                  this.isMarked = true;
+                });
+              }
+            }
+            break;
+          case 'es':
+            for (var bm in bookmarks['es']) {
+              if (bm['website'] == url) {
+                setState(() {
+                  this.isMarked = true;
+                });
+              }
+            }
+            break;
+          default:
+            setState(() {
+              this.isMarked = false;
+            });
+        }
+      });
+    });
+  }
+
   _launchUrl(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
@@ -43,7 +181,7 @@ class ResultListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    '${url.substring(0, 30)}...',
+                    '${widget.url.substring(0, 30)}...',
                     maxLines: 1,
                     style: TextStyle(
                       fontSize: 10,
@@ -53,9 +191,11 @@ class ResultListItem extends StatelessWidget {
                   Container(
                       margin: const EdgeInsets.only(top: 10.0),
                       child: GestureDetector(
-                          onTap: () {_launchUrl(url);},
+                          onTap: () {
+                            _launchUrl(widget.url);
+                          },
                           child: Text(
-                            title,
+                            widget.title,
                             style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold,
@@ -63,7 +203,7 @@ class ResultListItem extends StatelessWidget {
                           ))),
                   Container(
                       margin: const EdgeInsets.only(top: 10.0),
-                      child: Text(meta['desc'],
+                      child: Text(widget.meta['desc'],
                           style: TextStyle(
                               color: Colors.grey[700], fontSize: 12))),
                   Container(
@@ -76,10 +216,12 @@ class ResultListItem extends StatelessWidget {
                         title: null,
                         leading: IconButton(
                           icon: Icon(
-                            Icons.bookmark_border,
+                            this.isMarked ? Icons.bookmark : Icons.bookmark_border,
                             color: Colors.grey[700],
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            addToBookmarks();
+                          },
                         ),
                         children: <Widget>[
                           Container(
@@ -90,7 +232,7 @@ class ResultListItem extends StatelessWidget {
                                     Text('Language Level: ',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold)),
-                                    Text(level)
+                                    Text(widget.level)
                                   ],
                                 ),
                                 Container(
@@ -107,7 +249,7 @@ class ResultListItem extends StatelessWidget {
                                             padding: new EdgeInsets.only(
                                                 top: 10.0, bottom: 10.0),
                                             child: Text(
-                                                "A1:\t\t ${levelMeta['A1']}%,\nA2:\t\t${levelMeta['A2']}%,\nB1:\t\t ${levelMeta['B1']}%,\nB2:\t\t${levelMeta['B2']}%,\nC1:\t\t ${levelMeta['C1']}%,\nC2:\t\t${levelMeta['C2']}%")),
+                                                "A1:\t\t ${widget.levelMeta['A1']}%,\nA2:\t\t${widget.levelMeta['A2']}%,\nB1:\t\t ${widget.levelMeta['B1']}%,\nB2:\t\t${widget.levelMeta['B2']}%,\nC1:\t\t ${widget.levelMeta['C1']}%,\nC2:\t\t${widget.levelMeta['C2']}%")),
                                         Row(
                                           children: <Widget>[
                                             Text('Word Length: ',
@@ -117,14 +259,14 @@ class ResultListItem extends StatelessWidget {
                                             Text(
                                               // capitalize first letter of difficulty
                                               // Returns: Easy | Hard
-                                              '${levelMeta['difficulty'][0].toUpperCase()}${levelMeta['difficulty'].substring(1)}',
+                                              '${widget.levelMeta['difficulty'][0].toUpperCase()}${widget.levelMeta['difficulty'].substring(1)}',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
-                                                  color:
-                                                      levelMeta['difficulty'] ==
-                                                              'easy'
-                                                          ? Colors.green
-                                                          : Colors.red),
+                                                  color: widget.levelMeta[
+                                                              'difficulty'] ==
+                                                          'easy'
+                                                      ? Colors.green
+                                                      : Colors.red),
                                             )
                                           ],
                                         ),
