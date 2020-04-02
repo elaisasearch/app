@@ -181,7 +181,9 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
 
   Widget _buildResults() {
     if (documents.length > 0) {
-      return Column(
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: Column(
         // TODO: Make this scrollable
         children: <Widget>[
           // show wikipedia entry card if wikipedia information is provided
@@ -206,7 +208,7 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
                 .toList(),
           ))
         ],
-      );
+      ));
     } else {
       return Center(
           child: Icon(
@@ -319,7 +321,9 @@ class _WordSuggestionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme.subhead;
-    return ListView.builder(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: ListView.builder(
       itemCount: suggestions.length,
       itemBuilder: (BuildContext context, int i) {
         final String suggestion = suggestions[i];
@@ -343,6 +347,6 @@ class _WordSuggestionList extends StatelessWidget {
           },
         );
       },
-    );
+    ));
   }
 }
