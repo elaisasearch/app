@@ -15,19 +15,27 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
   _buildBookmarks(bookmarks) {
     List<BookmarkCard> bookmarkCards = [];
 
-    bookmarks['en'].forEach((bookmark) {
+    try {
+      bookmarks['en'].forEach((bookmark) {
+        bookmarkCards.add(BookmarkCard(
+          website: bookmark['website'],
+          desc: bookmark['desc'],
+          level: bookmark['level'],
+          levelMeta: bookmark['level_meta'],
+          title: bookmark['title'],
+          date: bookmark['date'],
+        ));
+      });
 
-      bookmarkCards.add(BookmarkCard(
-        website: bookmark['website'],
-        desc: bookmark['desc'],
-        level: bookmark['level'],
-        levelMeta: bookmark['level_meta'],
-        title: bookmark['title'],
-        date: bookmark['date'],
+      return ListView(children: bookmarkCards);
+    } catch (error) {
+      return Center(
+          child: Icon(
+        Icons.bookmark,
+        size: 120.0,
+        color: Colors.grey[400],
       ));
-    });
-
-    return ListView(children: bookmarkCards);
+    }
   }
 
   @override
@@ -44,7 +52,6 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.grey[400]),
                 ));
               }
-
               return _buildBookmarks(snapshot.data);
             }));
   }
