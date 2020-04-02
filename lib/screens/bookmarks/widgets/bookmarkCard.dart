@@ -1,3 +1,5 @@
+import 'package:app/handlers/bookmarksHandler.dart';
+import 'package:app/screens/main/main-screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -9,21 +11,20 @@ class BookmarkCard extends StatefulWidget {
   final levelMeta;
   final date;
 
-  BookmarkCard({
-    @required this.website,
-    @required this.desc,
-    @required this.title,
-    @required this.level,
-    @required this.levelMeta,
-    @required this.date
-  });
+  BookmarkCard(
+      {@required this.website,
+      @required this.desc,
+      @required this.title,
+      @required this.level,
+      @required this.levelMeta,
+      @required this.date});
 
   @override
-  _BookmarkCardState createState() => _BookmarkCardState(this.website, this.desc, this.title, this.level, this.levelMeta, this.date);
+  _BookmarkCardState createState() => _BookmarkCardState(this.website,
+      this.desc, this.title, this.level, this.levelMeta, this.date);
 }
 
 class _BookmarkCardState extends State<BookmarkCard> {
-
   final String website;
   final desc;
   final String title;
@@ -31,15 +32,8 @@ class _BookmarkCardState extends State<BookmarkCard> {
   final levelMeta;
   final date;
 
-  _BookmarkCardState(
-    this.website,
-    this.desc,
-    this.title,
-    this.level,
-    this.levelMeta,
-    this.date
-  );
-
+  _BookmarkCardState(this.website, this.desc, this.title, this.level,
+      this.levelMeta, this.date);
 
   _launchUrl(String url) async {
     if (await canLaunch(url)) {
@@ -51,7 +45,6 @@ class _BookmarkCardState extends State<BookmarkCard> {
 
   @override
   Widget build(BuildContext context) {
-
     return Card(
         margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         shape:
@@ -63,12 +56,14 @@ class _BookmarkCardState extends State<BookmarkCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   ListTile(
-                    title: Text(title, style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.grey[900],
-                    ),),
+                    title: Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.grey[900],
+                      ),
+                    ),
                     subtitle: Text(date),
-                    
                   ),
                   Container(
                       margin: const EdgeInsets.only(top: 10.0, left: 15.0),
@@ -93,9 +88,12 @@ class _BookmarkCardState extends State<BookmarkCard> {
                         title: null,
                         leading: IconButton(
                           icon: Icon(Icons.delete),
-                            color: Colors.grey[700],
-                            onPressed: () {},
-                          ),
+                          color: Colors.grey[700],
+                          onPressed: () {
+                            deleteFromBookmarks(website);
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => MainScreen()));
+                          },
+                        ),
                         children: <Widget>[
                           Container(
                               padding: new EdgeInsets.all(10.0),

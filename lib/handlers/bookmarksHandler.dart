@@ -17,7 +17,7 @@ Future<String> get _localPath async {
 
 Future<File> get _localFile async {
   final path = await _localPath;
-  return File('$path/bookmrks.json');
+  return File('$path/bokmrks.json');
 }
 
 Future getBookmarks() async {
@@ -56,4 +56,21 @@ Future<File> addToBookmarks(url, title, meta, levelMeta, level) async {
   final file = await _localFile;
   // Write the file
   return file.writeAsString(json.encode(bookmarks));
+}
+
+Future deleteFromBookmarks(website) async {
+
+  var _bookmarks = await getBookmarks();
+
+  _bookmarks.forEach((lang, bmList) {
+    //print(bmList.length);
+    for (var bm in bmList.toSet()) {
+      if (bm['website'] == website) {
+        bmList.remove(bm);
+      }
+    }
+  });
+
+  var _file = await _localFile;
+  _file.writeAsString(json.encode(_bookmarks));
 }
