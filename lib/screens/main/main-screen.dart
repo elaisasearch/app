@@ -1,3 +1,4 @@
+import 'package:app/screens/bookmarks/bookmarks-screen.dart';
 import 'package:app/screens/main/widgets/mainAppBar.dart';
 import 'package:app/screens/main/widgets/mainDrawer.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +75,7 @@ class _MainScreenState extends State<MainScreen> {
         onPageChanged: _onPageChanged,
         children: <Widget>[
           SearchScreen(key: _pageKeys[0]),
-          SearchScreen(key: _pageKeys[1]),
+          BookmarksScreen(key: _pageKeys[1]),
           SearchScreen(key: _pageKeys[2]),
         ],
       ),
