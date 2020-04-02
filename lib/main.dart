@@ -18,6 +18,9 @@ class ElaisaApp extends StatelessWidget {
         title: "Elaisa Search",
         theme: ThemeData(
           primaryColor: Colors.white,
+          appBarTheme: AppBarTheme(
+            elevation: 0,
+          )
         ),
         home: MainScreen());
   }
