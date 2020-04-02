@@ -55,7 +55,12 @@ class _SearchScreenState extends State<SearchScreen> {
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
             focusedBorder:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
-            hintText: 'Search for documents'),
+            hintText: 'Search for documents',
+            suffixIcon: Material(
+              color: Colors.transparent,
+              child: Icon(Icons.search)
+            )    
+        ),
         textInputAction: TextInputAction.search,
         onChanged: (_) {
           showSearch(
