@@ -92,7 +92,6 @@ class _BookmarkCardState extends State<BookmarkCard> {
                           color: Colors.grey[700],
                           onPressed: () {
                             deleteFromBookmarks(website);
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => MainScreen()));
                           },
                         ),
                         children: <Widget>[
