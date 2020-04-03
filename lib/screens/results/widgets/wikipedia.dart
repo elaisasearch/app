@@ -24,10 +24,11 @@ class Wikipedia extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
+      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.black87, width: 0.2))),
         margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        //shape:
+        //    RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
@@ -38,7 +39,7 @@ class Wikipedia extends StatelessWidget {
                     'Wikipedia',
                     style: TextStyle(
                       fontSize: 13,
-                      color: Colors.grey[600],
+                      color: Colors.grey[800],
                     ),
                   ),
                   Container(
@@ -50,20 +51,18 @@ class Wikipedia extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey[800]),
+                                color: Colors.black87),
                           ))),
                   Container(
                       margin: const EdgeInsets.only(top: 10.0),
                       child: Text(summary.substring(0, 200),
                           style: TextStyle(
-                              color: Colors.grey[700], fontSize: 12))),
+                              color: Colors.black87, fontSize: 12))),
                   Container(
-                      margin: const EdgeInsets.only(top: 10.0),
-                      child: FlatButton(
-                        padding: EdgeInsets.all(0),
-                        highlightColor: Colors.transparent,
-                        child: Text('LEARN MORE'),
-                        onPressed: () { _launchUrl(url); },
+                      margin: const EdgeInsets.only(top: 15.0),
+                      child: GestureDetector(
+                        child: Text('LEARN MORE', style: TextStyle(fontWeight: FontWeight.w500),),
+                        onTap: () { _launchUrl(url); },
                       )
                       
                       )
