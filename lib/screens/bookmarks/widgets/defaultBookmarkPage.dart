@@ -21,7 +21,7 @@ class DefaultBookmarkPage extends StatelessWidget {
         color: Colors.grey[400],
       )),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Colors.red,
         onPressed: () => _alertDialog(context),
         tooltip: 'Increment Counter',
         child: const Icon(

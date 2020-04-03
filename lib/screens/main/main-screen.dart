@@ -97,16 +97,17 @@ class _MainScreenState extends State<MainScreen> {
         
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
+            activeIcon: Icon(Icons.search, color: Colors.red),
             icon: Icon(Icons.search),
             title: SizedBox.shrink(),
           ),
           BottomNavigationBarItem(
-            activeIcon: Icon(Icons.bookmark),
+            activeIcon: Icon(Icons.bookmark, color: Colors.red,),
             icon: Icon(Icons.bookmark_border),
             title: SizedBox.shrink(),
           ),
           BottomNavigationBarItem(
-            //activeIcon: Icon(Icons.person),
+            activeIcon: !mainState.getLoggedIn ? Icon(Icons.person, color: Colors.red,) : null,
             icon: _buildAvatar(mainState),
             title: SizedBox.shrink(),
           ),
