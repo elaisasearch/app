@@ -186,6 +186,7 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
     }
   }
 
+
   Widget _buildResults() {
     if (documents.length > 0) {
       return Scaffold(
@@ -201,18 +202,19 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
                       summary: wikipedia.summary)
                   : null,
               Expanded(
-                  child: ListView(
-                scrollDirection: Axis.vertical,
-                // for every item in the found documents list, render the list item
-                children: documents
-                    .map((doc) => ResultListItem(
-                        url: doc['url'],
-                        meta: doc['meta'],
-                        title: doc['title'],
-                        level: doc['level'],
-                        levelMeta: doc['level_meta'],
-                        pagerank: doc['pagerank']))
-                    .toList(),
+                  child: ListView.builder(
+                    itemCount: documents.length,
+                    itemBuilder: (context, index) {
+                      print(documents[index]);
+                      return ResultListItem(
+                        url: documents[index]['url'],
+                        meta: documents[index]['meta'],
+                        title: documents[index]['title'],
+                        level: documents[index]['level'],
+                        levelMeta: documents[index]['level_meta'],
+                        pagerank: documents[index]['pagerank']);
+                    },
+
               ))
             ],
           ));
