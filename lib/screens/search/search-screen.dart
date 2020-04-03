@@ -244,23 +244,6 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
           showSuggestions(context);
         },
       )
-
-      // query.isNotEmpty
-      //     ? IconButton(
-      //         tooltip: 'Clear',
-      //         icon: const Icon(Icons.clear, color: Colors.black54,),
-      //         onPressed: () {
-      //           query = '';
-      //           showSuggestions(context);
-      //         },
-      //       )
-      //     : IconButton(
-      //         icon: const Icon(Icons.mic, color: ,),
-      //         tooltip: 'Voice input',
-      //         onPressed: () {
-      //           this.query = 'TBW: Get input from voice';
-      //         },
-      //       ),
     ];
   }
 
