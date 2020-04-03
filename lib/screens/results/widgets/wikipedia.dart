@@ -26,7 +26,7 @@ class Wikipedia extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.black87, width: 0.2))),
-        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
         //shape:
         //    RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         child: Padding(
