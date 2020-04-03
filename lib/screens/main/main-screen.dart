@@ -1,3 +1,5 @@
+import 'package:app/handlers/gravatarHandler.dart';
+import 'package:app/providers/mainProvider.dart';
 import 'package:app/screens/bookmarks/bookmarks-screen.dart';
 import 'package:app/screens/main/widgets/mainAppBar.dart';
 import 'package:app/screens/main/widgets/mainDrawer.dart';
@@ -65,8 +67,18 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
+  _buildAvatar(MainState mainState) {
+    if (mainState.getLoggedIn == true) {
+      return CircleAvatar(radius: 15.0, backgroundImage: NetworkImage(getGravatar(mainState.getEmail)));
+    } else {
+      return Icon(Icons.person);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    MainState mainState = MainState();
+
     return Scaffold(
       drawer: MainDrawer(),
       appBar: MainAppBar(),
@@ -83,7 +95,7 @@ class _MainScreenState extends State<MainScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             title: SizedBox.shrink(),
@@ -94,8 +106,8 @@ class _MainScreenState extends State<MainScreen> {
             title: SizedBox.shrink(),
           ),
           BottomNavigationBarItem(
-            activeIcon: Icon(Icons.person),
-            icon: Icon(Icons.person_outline),
+            //activeIcon: Icon(Icons.person),
+            icon: _buildAvatar(mainState),
             title: SizedBox.shrink(),
           ),
         ],
