@@ -86,17 +86,17 @@ class _MainScreenState extends State<MainScreen> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            title: Text(''),
+            title: SizedBox.shrink(),
           ),
           BottomNavigationBarItem(
             activeIcon: Icon(Icons.bookmark),
             icon: Icon(Icons.bookmark_border),
-            title: Text(''),
+            title: SizedBox.shrink(),
           ),
           BottomNavigationBarItem(
             activeIcon: Icon(Icons.person),
             icon: Icon(Icons.person_outline),
-            title: Text(''),
+            title: SizedBox.shrink(),
           ),
         ],
         currentIndex: _index,
