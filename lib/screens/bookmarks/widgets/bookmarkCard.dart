@@ -49,6 +49,7 @@ class _BookmarkCardState extends State<BookmarkCard> {
         margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+            elevation: 5,
         child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
