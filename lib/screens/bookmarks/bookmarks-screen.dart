@@ -13,6 +13,8 @@ class BookmarksScreen extends StatefulWidget {
 }
 
 class _BookmarksScreenState extends State<BookmarksScreen> {
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey();
+
   _buildBookmarks(bookmarks) {
     List<BookmarkCard> bookmarkCards = [];
 
@@ -29,7 +31,22 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
           ));
         });
 
-        return ListView(children: bookmarkCards);
+        //return ListView(children: bookmarkCards);
+        return AnimatedList(
+            key: _listKey,
+            initialItemCount: bookmarks['en'].length,
+            itemBuilder:
+                (BuildContext context, int index, Animation<double> animation) {
+              return FadeTransition(
+                  opacity: animation,
+                  child: BookmarkCard(
+                      website: bookmarks['en'][index]['website'],
+                      desc: bookmarks['en'][index]['desc'],
+                      level: bookmarks['en'][index]['level'],
+                      levelMeta: bookmarks['en'][index]['level_meta'],
+                      title: bookmarks['en'][index]['title'],
+                      date: bookmarks['en'][index]['date']));
+            });
       } catch (error) {
         return Center(
             child: Icon(
