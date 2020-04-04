@@ -10,6 +10,8 @@ class BookmarkCard extends StatefulWidget {
   final String level;
   final levelMeta;
   final date;
+  final GlobalKey<AnimatedListState> listKey;
+  final int index;
 
   BookmarkCard(
       {@required this.website,
@@ -17,11 +19,13 @@ class BookmarkCard extends StatefulWidget {
       @required this.title,
       @required this.level,
       @required this.levelMeta,
-      @required this.date});
+      @required this.date,
+      @required this.listKey,
+      @required this.index});
 
   @override
   _BookmarkCardState createState() => _BookmarkCardState(this.website,
-      this.desc, this.title, this.level, this.levelMeta, this.date);
+      this.desc, this.title, this.level, this.levelMeta, this.date, this.listKey, this.index);
 }
 
 class _BookmarkCardState extends State<BookmarkCard> {
@@ -31,9 +35,11 @@ class _BookmarkCardState extends State<BookmarkCard> {
   final String level;
   final levelMeta;
   final date;
+  final GlobalKey<AnimatedListState> listKey;
+  final int index;
 
   _BookmarkCardState(this.website, this.desc, this.title, this.level,
-      this.levelMeta, this.date);
+      this.levelMeta, this.date, this.listKey, this.index);
 
   _launchUrl(String url) async {
     if (await canLaunch(url)) {
@@ -41,6 +47,27 @@ class _BookmarkCardState extends State<BookmarkCard> {
     } else {
       throw 'Could not launch $url';
     }
+  }
+
+  _removeBookmarkFromList() {
+    deleteFromBookmarks(website);
+
+    listKey.currentState.removeItem(
+      index,
+      (BuildContext context, Animation<double> animation) {
+        return FadeTransition(
+          opacity:
+              CurvedAnimation(parent: animation, curve: Interval(0.5, 1.0)),
+          child: SizeTransition(
+            sizeFactor:
+                CurvedAnimation(parent: animation, curve: Interval(0.0, 1.0)),
+            axisAlignment: 0.0,
+            //child: _buildItem(user),
+          ),
+        );
+      },
+      duration: Duration(milliseconds: 600),
+    );
   }
 
   @override
@@ -97,7 +124,7 @@ class _BookmarkCardState extends State<BookmarkCard> {
                           icon: Icon(Icons.delete),
                           color: Colors.grey[700],
                           onPressed: () {
-                            deleteFromBookmarks(website);
+                            _removeBookmarkFromList();
                           },
                         ),
                         children: <Widget>[

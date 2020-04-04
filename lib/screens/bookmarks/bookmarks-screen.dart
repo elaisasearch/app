@@ -45,7 +45,9 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
                       level: bookmarks['en'][index]['level'],
                       levelMeta: bookmarks['en'][index]['level_meta'],
                       title: bookmarks['en'][index]['title'],
-                      date: bookmarks['en'][index]['date']));
+                      date: bookmarks['en'][index]['date'],
+                      listKey: _listKey,
+                      index: index));
             });
       } catch (error) {
         return Center(
