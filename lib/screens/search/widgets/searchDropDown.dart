@@ -37,6 +37,24 @@ class _SearchDropDownState extends State<SearchDropDown> {
 
   String _value;
 
+  String _getValue(MainState state) {
+
+    switch (type) {
+      case 'level':
+        if (state.getLevel != '') {
+          return state.getLevel;
+        }
+        break;
+      case 'language':
+        if (state.getLanguage != '') {
+          return state.getLanguage;
+        }
+        break;
+    }
+
+    return _value;
+  }
+
   @override
   Widget build(BuildContext context) {
     // state
@@ -68,7 +86,7 @@ class _SearchDropDownState extends State<SearchDropDown> {
                       ? mainState.setLevel(value)
                       : mainState.setLanguage(value);
                 },
-                value: _value,
+                value: _getValue(mainState), //_value,
                 hint: Text(this.placeholder),
               ),
             ))));
