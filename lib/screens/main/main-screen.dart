@@ -3,6 +3,7 @@ import 'package:app/providers/mainProvider.dart';
 import 'package:app/screens/bookmarks/bookmarks-screen.dart';
 import 'package:app/screens/main/widgets/mainAppBar.dart';
 import 'package:app/screens/main/widgets/mainDrawer.dart';
+import 'package:app/screens/profile/login-screen.dart';
 import 'package:flutter/material.dart';
 
 // import Screens
@@ -88,7 +89,7 @@ class _MainScreenState extends State<MainScreen> {
         children: <Widget>[
           SearchScreen(key: _pageKeys[0]),
           BookmarksScreen(key: _pageKeys[1]),
-          SearchScreen(key: _pageKeys[2]),
+          LoginScreen(key: _pageKeys[2]),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
