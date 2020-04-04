@@ -49,7 +49,7 @@ class _BookmarkCardState extends State<BookmarkCard> {
         margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-            elevation: 5,
+        elevation: 5,
         child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
@@ -57,6 +57,15 @@ class _BookmarkCardState extends State<BookmarkCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   ListTile(
+                    trailing: IconButton(
+                      icon: Icon(
+                        Icons.open_in_new,
+                        color: Colors.grey[900],
+                      ),
+                      onPressed: () {
+                        _launchUrl(website);
+                      },
+                    ),
                     title: Text(
                       title,
                       style: TextStyle(
@@ -69,16 +78,13 @@ class _BookmarkCardState extends State<BookmarkCard> {
                   Container(
                       margin: const EdgeInsets.only(top: 10.0, left: 15.0),
                       child: GestureDetector(
-                          onTap: () {
-                            _launchUrl(website);
-                          },
                           child: Text(
-                            desc,
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey),
-                          ))),
+                        desc,
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey),
+                      ))),
                   Container(
                       margin: const EdgeInsets.only(top: 10.0),
                       child: ExpansionTile(
