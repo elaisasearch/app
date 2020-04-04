@@ -51,14 +51,14 @@ class _ResultListItemState extends State<ResultListItem> {
     if (this.isMarked) {
       setState(() {
         this.isMarked = false;
+        deleteFromBookmarks(url);
       });
     } else {
       setState(() {
         this.isMarked = true;
+        addToBookmarks(url, title, meta, levelMeta, level);
       });
     }
-
-    addToBookmarks(url, title, meta, levelMeta, level);
   }
 
   @override
