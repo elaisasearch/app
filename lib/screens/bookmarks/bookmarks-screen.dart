@@ -16,20 +16,9 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey();
 
   _buildBookmarks(bookmarks) {
-    List<BookmarkCard> bookmarkCards = [];
 
     if (bookmarks['en'].length != 0) {
       try {
-        bookmarks['en'].forEach((bookmark) {
-          bookmarkCards.add(BookmarkCard(
-            website: bookmark['website'],
-            desc: bookmark['desc'],
-            level: bookmark['level'],
-            levelMeta: bookmark['level_meta'],
-            title: bookmark['title'],
-            date: bookmark['date'],
-          ));
-        });
 
         //return ListView(children: bookmarkCards);
         return AnimatedList(
