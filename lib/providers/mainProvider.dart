@@ -34,8 +34,8 @@ class MainState with ChangeNotifier {
 
   String get getLevel => _level;
 
-  void signInUser(bool li, String e, String fn, String ln) {
-    _loggedIn = li;
+  void signInUser(String e, String fn, String ln) {
+    _loggedIn = true;
     _email = e;
     _firstname = fn;
     _lastname = ln;
