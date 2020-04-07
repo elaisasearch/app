@@ -18,14 +18,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     MainState mainState = MainState();
 
     try {
+      // try to login the user
+      // user data will be received from LoginScreen() after login
       if (user.email != '') {
       mainState.signInUser(user.email, user.firstname, user.lastname);
       }
-    } catch (e) {};
+    } catch (e) {}
 
     if (mainState.getLoggedIn) {
       return Scaffold(
-        body: Text('logged in'),
+        body: Text('${user.email} \n ${user.firstname} \n ${user.lastname}'),
       );
     } else {
       return Scaffold(
