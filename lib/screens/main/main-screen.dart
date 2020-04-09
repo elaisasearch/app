@@ -90,7 +90,7 @@ class _MainScreenState extends State<MainScreen> {
         children: <Widget>[
           SearchScreen(key: _pageKeys[0]),
           BookmarksScreen(key: _pageKeys[1]),
-          ProfileScreen(key: _pageKeys[2]),
+          //ProfileScreen(key: _pageKeys[2]),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -108,11 +108,11 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.bookmark_border),
             title: SizedBox.shrink(),
           ),
-          BottomNavigationBarItem(
-            activeIcon: !mainState.getLoggedIn ? Icon(Icons.person, color: Colors.red,) : null,
-            icon: _buildAvatar(mainState),
-            title: SizedBox.shrink(),
-          ),
+          // BottomNavigationBarItem(
+          //   activeIcon: !mainState.getLoggedIn ? Icon(Icons.person, color: Colors.red,) : null,
+          //   icon: _buildAvatar(mainState),
+          //   title: SizedBox.shrink(),
+          // ),
         ],
         currentIndex: _index,
         selectedItemColor: Colors.black,
