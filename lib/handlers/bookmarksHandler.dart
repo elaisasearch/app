@@ -51,7 +51,12 @@ Future<File> addToBookmarks(url, title, meta, levelMeta, level) async {
     'level': level,
   };
 
-  bookmarks['en'].add(newBookmark);
+  try {
+    bookmarks['en'].add(newBookmark);
+  } catch (error) {
+    bookmarks = {'en': [], 'de': [], 'es': []};
+    bookmarks['en'].add(newBookmark);
+  }
 
   final file = await _localFile;
   // Write the file
@@ -59,7 +64,6 @@ Future<File> addToBookmarks(url, title, meta, levelMeta, level) async {
 }
 
 Future deleteFromBookmarks(website) async {
-
   var _bookmarks = await getBookmarks();
 
   _bookmarks.forEach((lang, bmList) {
