@@ -205,7 +205,6 @@ class DocumentSearchDelegate extends SearchDelegate<String> {
                   child: ListView.builder(
                     itemCount: documents.length,
                     itemBuilder: (context, index) {
-                      print(documents[index]);
                       return ResultListItem(
                         url: documents[index]['url'],
                         meta: documents[index]['meta'],
